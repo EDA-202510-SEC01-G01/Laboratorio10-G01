@@ -42,17 +42,45 @@ def swim(my_heap, pos): #Jsantanilla
             pos = padre
     return my_heap
             
-def size():
-    pass
+def size(my_heap):
+    return my_heap["size"]
+    
 def is_empty(my_heap): #Jsantanilla
     if my_heap['size'] == 0:
         return True
     return False
-def get_first_priority():
-    pass
-def remove():
-    pass
-def sink():
-    pass
 
- 
+def get_first_priority(my_heap):
+    if is_empty(my_heap)==True:
+        return None
+    else:
+        return lt.get_element(my_heap["elements"], 1)
+    
+
+def remove(my_heap):
+    raiz=get_first_priority(my_heap)
+    lt.exchange(my_heap["elements"], 1, my_heap["elements"]["size"]-1)
+    lt.remove_last(my_heap["elements"])
+    my_heap = sink(my_heap, 1)
+    my_heap['size'] -=1
+    return raiz
+    
+    
+    
+
+def sink(my_heap, pos):
+    while pos < my_heap["size"]:
+        hijo1 = pos*2
+        hijo2 = (pos*2)+1
+        if pos == my_heap["size"] or (priority(my_heap, pos, hijo1) == True and priority(my_heap, pos, hijo2) == True):
+            break
+        else:
+            kh1=ipq.get_key(hijo1)
+            kh2=ipq.get_key(hijo2)
+            if my_heap["cmp_function"]==default_compare_lower_value:
+                hijo_exchange=min(kh1, kh2)
+            else:
+                hijo_exchange=max(kh1, kh2)
+            lt.exchange(my_heap['elements'], pos, hijo_exchange)
+            pos = hijo_exchange
+    return my_heap
