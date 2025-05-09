@@ -83,19 +83,18 @@ def get_first_priority(my_heap):
     
 
 def remove(my_heap):
-    def remove(my_heap):
-        if is_empty(my_heap)==True:
-            return None
-        else:
-            raiz = get_first_priority(my_heap)
-            last_pos = lt.size(my_heap["elements"])-1
-            lt.exchange(my_heap["elements"], 1, last_pos)
-            lt.remove_last(my_heap["elements"])
+    if is_empty(my_heap)==True:
+        return None
+    else:
+        raiz = get_first_priority(my_heap)
+        last_pos = lt.size(my_heap["elements"])-1
+        lt.exchange(my_heap["elements"], 1, last_pos)
+        lt.remove_last(my_heap["elements"])
+        
+        my_heap['size'] -= 1
+        sink(my_heap, 1)
             
-            my_heap['size'] -= 1
-            sink(my_heap, 1)
-            
-            return raiz
+        return raiz
     
 def sink(my_heap, pos):
     while pos < my_heap["size"]:
