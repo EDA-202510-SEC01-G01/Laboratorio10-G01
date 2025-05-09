@@ -83,65 +83,39 @@ def get_first_priority(my_heap):
     
 
 def remove(my_heap):
-    raiz=get_first_priority(my_heap)
-    lt.exchange(my_heap["elements"], 1, my_heap["elements"]["size"]-1)
-    lt.remove_last(my_heap["elements"])
-    my_heap = sink(my_heap, 1)
-    my_heap['size'] -=1
-    return raiz
+    def remove(my_heap):
+        if is_empty(my_heap)==True:
+            return None
+        else:
+            raiz = get_first_priority(my_heap)
+            last_pos = lt.size(my_heap["elements"])-1
+            lt.exchange(my_heap["elements"], 1, last_pos)
+            lt.remove_last(my_heap["elements"])
+            
+            my_heap['size'] -= 1
+            sink(my_heap, 1)
+            
+            return raiz
     
-    
-    
-
 def sink(my_heap, pos):
     while pos < my_heap["size"]:
         hijo1 = pos*2
         hijo2 = (pos*2)+1
-        if pos == my_heap["size"] or (priority(my_heap, pos, hijo1) == True and priority(my_heap, pos, hijo2) == True):
+        if pos >= my_heap["size"] or (priority(my_heap, pos, hijo1) == True and priority(my_heap, pos, hijo2) == True):
             break
         else:
-            kh1=ipq.get_key(hijo1)
-            kh2=ipq.get_key(hijo2)
+            elem1 = lt.get_element(my_heap["elements"], hijo1)
+            elem2 = lt.get_element(my_heap["elements"], hijo2)
+            kh1 = ipq.get_key(elem1)
+            kh2 = ipq.get_key(elem2)
             if my_heap["cmp_function"]==default_compare_lower_value:
                 hijo_exchange=min(kh1, kh2)
             else:
                 hijo_exchange=max(kh1, kh2)
-            lt.exchange(my_heap['elements'], pos, hijo_exchange)
+            
+            if hijo_exchange==kh1:
+                lt.exchange(my_heap['elements'], pos, hijo1)
+            else:
+                lt.exchange(my_heap['elements'], pos, hijo2)
             pos = hijo_exchange
     return my_heap
-
-"""def remove(my_heap):
-    if is_empty(my_heap):
-        return None
-
-    raiz = lt.getElement(my_heap['elements'], 1)  # guardar root
-    last_pos = lt.size(my_heap['elements'])
-
-    lt.exchange(my_heap['elements'], 1, last_pos)
-    lt.removeLast(my_heap['elements'])
-    my_heap['size'] -= 1
-
-    if my_heap['size'] >= 1:
-        my_heap = sink(my_heap, 1)
-
-    return raiz
-
-
-def sink(my_heap, pos):
-    while True:
-        hijo1 = pos * 2
-        hijo2 = pos * 2 + 1
-        menor = pos
-
-        if hijo1 <= my_heap['size'] and not priority(my_heap, pos, hijo1):
-            menor = hijo1
-        if hijo2 <= my_heap['size'] and not priority(my_heap, menor, hijo2):
-            menor = hijo2
-
-        if menor == pos:
-            break
-
-        lt.exchange(my_heap['elements'], pos, menor)
-        pos = menor
-
-    return my_heap"""
